@@ -8,8 +8,7 @@ import { useTodoService } from '../context/TodosContext';
 import TodoForm from '../components/TodoForm';
 import TodoList from '../components/TodoList';
 
-interface IDetailProps { auth: AuthService; navigate: (r: Route) => void };
-
+interface IDetailProps { auth: AuthService; navigate: (nextRoute: Route) => void };
 
 const Detail: React.FC<IDetailProps> = ({ auth, navigate }) => {
 
@@ -30,9 +29,14 @@ const Detail: React.FC<IDetailProps> = ({ auth, navigate }) => {
         <div className="container">
             <div className="header">
                 <h2>Todos</h2>
-                <button className="btn" onClick={() => { auth.logout(); navigate(Route.Login); }}>Logout</button>
+
             </div>
-            <TodoForm onSave={handleSave} currentTodo={currentTodo} />
+            <div className="form-container">
+                <TodoForm onSave={handleSave} currentTodo={currentTodo} />
+            </div>
+            {
+                todos.length === 0 && (<p>No entries found</p>)
+            }
             <TodoList todos={todos} onEdit={setCurrentTodo} />
         </div>
     );

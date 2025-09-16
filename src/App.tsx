@@ -15,8 +15,17 @@ function App() {
   const [route, setRoute] = useState<Route>(() => (auth.isLoggedIn() ? Route.Detail : Route.Login));
   const navigate = (route: Route) => setRoute(route);
 
-  if (route === 'login') return <Login auth={auth} navigate={navigate} />;
-  return <Detail auth={auth} navigate={navigate} />;
+  return (
+    <>
+      <button className="btn logout" onClick={() => { auth.logout(); navigate(Route.Login); }}>Logout</button>
+      <h1> León's Todo App</h1>
+
+      {
+        route === 'login' ? <Login auth={auth} navigate={navigate} /> : <Detail auth={auth} navigate={navigate} />
+      }
+    </>
+  )
+
 }
 
 export default App

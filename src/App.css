@@ -1,27 +1,80 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: rgb(255, 240, 240);
   background-color: #242424;
+  --main-text-color: rgb(255, 240, 240);
 
+  color: var(--main-text-color)
 }
 
 #app {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  position: relative;
+
+}
+
+h1,
+h2 {
   text-align: center;
 }
 
-.container {
-  border: 2px solid white
+.form-container {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 2rem;
+  border-radius: 20px;
+  border: 2px solid var(--main-text-color);
+}
+
+.btn-container {
+  display: flex;
+  align-items: flex-end;
+}
+
+.password-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
+  input {
+    width: 100%;
+  }
 }
 
 .form-field {
   display: flex;
 
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
 
+  p {
+    font-weight: 600;
+    margin: 0;
+  }
+
+
+
+  input,
+  textarea {
+
+    padding: .5rem;
+
+  }
+
+  .charcount {
+    font-size: 12px;
+
+  }
 }
 
 .btn,
@@ -29,6 +82,7 @@
   border: none;
   border-radius: 3px;
   padding: .5rem 1rem;
+  font-weight: 600;
 }
 
 .error {
@@ -36,15 +90,37 @@
 }
 
 .submit-btn {
-  background-color: rgb(83, 223, 95);
+  display: inline-block;
+  background-color: rgb(29, 117, 37);
+  color: var(--main-text-color)
+}
+
+.logout {
+  background: #f34e4e;
+  color: var(--main-text-color);
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .todo-list {
-  display: flex;
-  flex-direction: column;
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  /* 4 columns of equal width */
+  gap: 16px;
+  /* spacing between items, adjust as needed */
 
-  .list-item {
-    border: 2px solid red;
-    margin-bottom: 1rem;
+
+  .todo-list-item {
+    background: #fff8b5;
+    color: #000000;
+    padding: 1rem;
+
+    .title {
+      font-weight: 600;
+    }
+
+ 
   }
 }

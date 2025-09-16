@@ -1,5 +1,6 @@
 import React from 'react';
 import { TodoItem } from '../services/todo';
+import TodoListItem from './TodoItem';
 
 
 interface ITodoListProps {
@@ -11,13 +12,7 @@ interface ITodoListProps {
 const TodoList: React.FC<ITodoListProps> = ({ todos, onEdit }) => (
     <div className="todo-list">
         {todos.map(todo => (
-            <div key={todo.id} className="list-item">
-                <div>
-                    <strong>{todo.title}</strong>
-                    <div className="small">{new Date(todo.date).toLocaleDateString()}</div>
-                </div>
-                <button className="btn ghost" onClick={() => onEdit(todo)}>Edit</button>
-            </div>
+            <TodoListItem todo={todo} onEdit={onEdit} />
         ))}
     </div>
 );
