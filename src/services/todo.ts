@@ -1,5 +1,5 @@
 export type TodoItem = {
-    id: string;
+    id: number;
     title: string;
     description: string;
     date: string;
@@ -16,13 +16,16 @@ export class TodoService {
 
 
     addTodo(todo: Omit<TodoItem, 'id'>): TodoItem {
-        const newItem: TodoItem = { ...todo, id: this.todos[this.todos.length - 1].id + 1 };
-        this.todos.unshift(newItem);
+        //first entry will always have the highest id
+        const nextTodoId = this.todos.length === 0 ? 1 : this.todos[0].id + 1
+        const newItem: TodoItem = { ...todo, id: nextTodoId };
+        this.todos.push(newItem);
         return newItem;
+
     }
 
 
-    updateTodos(id: string, update: Omit<TodoItem, 'id'>): TodoItem | null {
+    updateTodos(id: number, update: Omit<TodoItem, 'id'>): TodoItem | null {
         const idx = this.todos.findIndex(i => i.id === id);
         if (idx === -1) return null;
         this.todos[idx] = { ...update, id };
@@ -30,7 +33,7 @@ export class TodoService {
     }
 
 
-    findTodo(id: string) {
+    findTodo(id: number) {
         return this.todos.find(i => i.id === id);
     }
 }

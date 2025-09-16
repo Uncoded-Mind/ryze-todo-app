@@ -1,23 +1,28 @@
 import React, { useState } from 'react';
 import { AuthService } from '../auth/auth';
-import { TodoService, TodoItem } from '../services/todo';
+import { TodoItem } from '../services/todo';
 import { Route } from '../routes/routes';
+import { useTodoService } from '../context/TodosContext';
+
+//components
 import TodoForm from '../components/TodoForm';
 import TodoList from '../components/TodoList';
 
-interface IDetailProps { auth: AuthService; todoService: TodoService; navigate: (r: Route) => void };
+interface IDetailProps { auth: AuthService; navigate: (r: Route) => void };
 
 
-const Detail: React.FC<IDetailProps> = ({ auth, todoService, navigate }) => {
+const Detail: React.FC<IDetailProps> = ({ auth, navigate }) => {
 
-    const [currentTodo, setcurrentTodo] = useState<TodoItem | null>(null);
+    const todoService = useTodoService();
+
+    const [currentTodo, setCurrentTodo] = useState<TodoItem | null>(null);
     const [todos, setTodos] = useState<TodoItem[]>(todoService.getAllTodos());
 
-    const handleSave = (data: Omit<TodoItem, 'id'>, id?: string) => {
+    const handleSave = (data: Omit<TodoItem, 'id'>, id?: number) => {
         if (id) todoService.updateTodos(id, data);
         else todoService.addTodo(data);
         setTodos(todoService.getAllTodos());
-        setcurrentTodo(null);
+        setCurrentTodo(null);
     };
 
 
@@ -28,7 +33,7 @@ const Detail: React.FC<IDetailProps> = ({ auth, todoService, navigate }) => {
                 <button className="btn" onClick={() => { auth.logout(); navigate(Route.Login); }}>Logout</button>
             </div>
             <TodoForm onSave={handleSave} currentTodo={currentTodo} />
-            <TodoList todos={todos} onEdit={setcurrentTodo} />
+            <TodoList todos={todos} onEdit={setCurrentTodo} />
         </div>
     );
 };

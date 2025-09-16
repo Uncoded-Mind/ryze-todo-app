@@ -3,7 +3,7 @@ import { TodoItem } from '../services/todo';
 
 
 interface ITodoFormProps {
-    onSave: (data: Omit<TodoItem, 'id'>, id?: string) => void;
+    onSave: (data: Omit<TodoItem, 'id'>, id?: number) => void;
     currentTodo: TodoItem | null;
 };
 
@@ -22,7 +22,7 @@ const TodoForm: React.FC<ITodoFormProps> = ({ onSave, currentTodo }) => {
     }, [currentTodo]);
 
 
-    const handleSubmit = () => {
+    const onSubmit = () => {
         if (!title || !description || !date) {
             setError('All fields required');
             return;
@@ -40,18 +40,19 @@ const TodoForm: React.FC<ITodoFormProps> = ({ onSave, currentTodo }) => {
             <div className="form-field">
                 <p>Title</p>
                 <input value={title} maxLength={100} onChange={e => setTitle(e.target.value)} />
+                <p className="charcount">{title.length}/100</p>
             </div>
             <div className="form-field">
                 <p>Text</p>
                 <textarea value={description} maxLength={300} onChange={e => setDescription(e.target.value)} />
-                <div className="charcount">{description.length}/300</div>
+                <p className="charcount">{description.length}/300</p>
             </div>
             <div className="form-field">
                 <p>Date</p>
                 <input type="date" value={date} onChange={e => setDate(e.target.value)} />
             </div>
             {error && <p className="error">{error}</p>}
-            <button className="submit-btn" onClick={handleSubmit}>Save</button>
+            <button className="submit-btn" onClick={onSubmit}>Save</button>
         </>
     );
 };
