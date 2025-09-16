@@ -2,7 +2,7 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: red;
+  color: rgb(255, 240, 240);
   background-color: #242424;
 
 }
@@ -14,24 +14,37 @@
   text-align: center;
 }
 
-
-
-a {
-  font-weight: 500;
-  text-decoration: inherit;
+.container {
+  border: 2px solid white
 }
 
-a:hover {}
-
-body {
-  margin: 0;
+.form-field {
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+
+
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.btn,
+.submit-btn {
+  border: none;
+  border-radius: 3px;
+  padding: .5rem 1rem;
+}
+
+.error {
+  color: red;
+}
+
+.submit-btn {
+  background-color: rgb(83, 223, 95);
+}
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+
+  .list-item {
+    border: 2px solid red;
+    margin-bottom: 1rem;
+  }
 }
