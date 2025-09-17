@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AuthService } from '../auth/auth';
 import { VALID_PASSWORD, VALID_USERNAME } from '../auth/auth';
 import { Route } from '../routes/routes';
@@ -13,6 +13,18 @@ const Login: React.FC<ILoginProps> = ({ auth, navigate }) => {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
+    const submitRef = useRef<() => void>(() => { });
+
+    const onSubmit = () => {
+        const isAuthenticated = auth.login({ username, password });
+        if (!isAuthenticated) {
+            setErrorMessage('Invalid credentials');
+            return;
+        }
+        navigate(Route.Detail);
+    };
+
+    submitRef.current = onSubmit;
 
     const togglePasswordVisibility = () => {
         if (fieldType === "password") {
@@ -27,27 +39,15 @@ const Login: React.FC<ILoginProps> = ({ auth, navigate }) => {
         navigate(Route.Detail);
     }
 
-
-    const onSubmit = () => {
-        const isAuthenticated = auth.login({ username, password });
-        if (!isAuthenticated) {
-            setErrorMessage('Invalid credentials');
-            return;
-        }
-        navigate(Route.Detail);
-    };
-
     useEffect(() => {
-        // coudlve used form aswell, just added more 'react'- way
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Enter") {
-                onSubmit();
+                submitRef.current();
             }
         };
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, []);
-
 
     return (
         <div className="container">

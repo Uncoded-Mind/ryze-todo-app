@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TodoItem } from '../services/todo';
 
 
@@ -14,12 +14,7 @@ const TodoForm: React.FC<ITodoFormProps> = ({ onSave, currentTodo }) => {
     const [date, setDate] = useState('');
     const [error, setError] = useState('');
 
-
-    useEffect(() => {
-        setTitle(currentTodo?.title || '');
-        setDescription(currentTodo?.description || '');
-        setDate(currentTodo?.date || '');
-    }, [currentTodo]);
+    const submitRef = useRef<() => void>(() => { })
 
 
     const onSubmit = () => {
@@ -33,6 +28,24 @@ const TodoForm: React.FC<ITodoFormProps> = ({ onSave, currentTodo }) => {
         setDescription('');
         setDate('');
     };
+
+    submitRef.current = onSubmit;
+
+    useEffect(() => {
+        setTitle(currentTodo?.title || '');
+        setDescription(currentTodo?.description || '');
+        setDate(currentTodo?.date || '');
+    }, [currentTodo]);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Enter") {
+                submitRef.current();
+            }
+        };
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, []);
 
 
     return (
