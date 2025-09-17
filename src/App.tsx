@@ -17,7 +17,7 @@ function App() {
 
   return (
     <>
-      <button className="btn logout" onClick={() => { auth.logout(); navigate(Route.Login); }}>Logout</button>
+      {auth.isLoggedIn() && <button className="btn logout" onClick={() => { auth.logout(); navigate(Route.Login); }}>Logout</button>}
       <h1> León's Todo App</h1>
 
       {
