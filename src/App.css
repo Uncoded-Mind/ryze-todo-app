@@ -93,20 +93,27 @@ h2 {
   border-radius: 3px;
   padding: .5rem 1rem;
   font-weight: 600;
+  cursor: pointer;
 
   &.edit {
     background: #f8e74b;
   }
 }
 
-.error {
-  color: red;
+.submit-btn {
+  background: rgb(29, 117, 37);
+  color: var(--main-text-color)
 }
 
-.submit-btn {
-  display: inline-block;
-  background-color: rgb(29, 117, 37);
-  color: var(--main-text-color)
+.submit-btn:disabled {
+  background: rgba(29, 117, 36, 0.644);
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+.error {
+  color: red;
 }
 
 .logout {

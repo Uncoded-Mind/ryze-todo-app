@@ -11,14 +11,18 @@ import TodoList from '../components/TodoList';
 const Detail: React.FC = () => {
 
     const todoService = useTodoService();
-    const [currentTodo, setCurrentTodo] = useState<TodoItem | null>(null);
     const [todos, setTodos] = useState<TodoItem[]>(todoService.getAllTodos());
+    const [currentTodo, setCurrentTodo] = useState<TodoItem | null>(null);
+
+    const handleCancel = () => {
+        setCurrentTodo(null);
+    }
 
     const handleSave = (data: Omit<TodoItem, 'id'>, id?: number) => {
         if (id) todoService.updateTodos(id, data);
         else todoService.addTodo(data);
         setTodos(todoService.getAllTodos());
-        setCurrentTodo(null);
+
     };
 
     const onMarkAsDone = (todo: TodoItem) => {
@@ -33,13 +37,13 @@ const Detail: React.FC = () => {
 
             </div>
             <div className="form-container">
-                <TodoForm onSave={handleSave} currentTodo={currentTodo} />
+                <TodoForm onSave={handleSave} currentTodo={currentTodo} onCancel={handleCancel} />
             </div>
             <hr className='ruler' />
             {
                 todos.length === 0 && (<p>No Todos found</p>)
             }
-            <TodoList todos={todos} onEdit={setCurrentTodo} onMarkAsDone={onMarkAsDone} />
+            <TodoList todos={todos} onEdit={setCurrentTodo} currentTodo={currentTodo} onMarkAsDone={onMarkAsDone} />
         </div>
     );
 };

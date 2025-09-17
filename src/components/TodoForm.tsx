@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TodoItem } from '../services/todo';
 
-
 interface ITodoFormProps {
     onSave: (data: Omit<TodoItem, 'id'>, id?: number) => void;
+    onCancel: () => void;
     currentTodo: TodoItem | null;
 };
 
@@ -14,32 +14,31 @@ interface IFormValues {
 }
 
 
-const TodoForm: React.FC<ITodoFormProps> = ({ onSave, currentTodo }) => {
+const TodoForm: React.FC<ITodoFormProps> = ({ onSave, onCancel, currentTodo }) => {
     const today = new Date().toISOString().split('T')[0];
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
     const [error, setError] = useState('');
-    const submitRef = useRef<() => void>(() => { })
+    const submitRef = useRef<() => void>(() => { });
 
-    const maxLenghtTitleIsReached = title.length === 100;
-    const maxLenghtDescriptionIsReached = description.length === 300;
+    const hasReachedTitleMax  = title.length === 100;
+    const hasReachedDescriptionMax  = description.length === 300;
 
 
-    const validateForm = (values: IFormValues): string | null => {
+
+    const validateForm = (values: IFormValues): string | undefined => {
         const rules: Record<keyof IFormValues, string> = {
             title: "Title is required",
             description: "Description is required",
             date: "Date is required",
         };
 
-        for (const [field, message] of Object.entries(rules) as [keyof IFormValues, string][]) {
-            if (!values[field]) {
-                return message; // return first error found
-            }
-        }
+        const missing = (Object.entries(rules) as [keyof IFormValues, string][])
+            .find(([field]) => !values[field]);
+        
+        return missing?.[1]
 
-        return null;
     };
 
     const onSubmit = () => {
@@ -79,19 +78,22 @@ const TodoForm: React.FC<ITodoFormProps> = ({ onSave, currentTodo }) => {
             <div className="form-field">
                 <p>Title</p>
                 <input value={title} maxLength={100} onChange={e => setTitle(e.target.value)} />
-                <p className={`charcount ${maxLenghtTitleIsReached ? "max-length" : ""}`} >{title.length}/100</p>
+                <p className={`charcount ${hasReachedTitleMax ? "max-length" : ""}`} >{title.length}/100</p>
             </div>
             <div className="form-field">
                 <p>Text</p>
                 <textarea rows={5} value={description} maxLength={300} onChange={e => setDescription(e.target.value)} />
-                <p className={`charcount ${maxLenghtDescriptionIsReached ? "max-length" : ""}`} >{description.length}/300</p>
+                <p className={`charcount ${hasReachedDescriptionMax ? "max-length" : ""}`} >{description.length}/300</p>
             </div>
             <div className="form-field">
                 <p>Date</p>
                 <input type="date" min={today} value={date} onChange={e => setDate(e.target.value)} />
             </div>
             {error && <p className="error">{error}</p>}
-            <button className="submit-btn" onClick={onSubmit}>Save</button>
+            <div className="btn-container">
+                <button className="submit-btn" onClick={onSubmit}>Save</button>
+                {currentTodo && <button className="btn" onClick={onCancel}>Cancel</button>}
+            </div>
         </>
     );
 };

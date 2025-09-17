@@ -1,16 +1,15 @@
 import React from 'react';
 import { TodoItem } from '../services/todo';
 
-
-
 interface ITodoItemProps {
+    currentTodo: TodoItem | null;
     todo: TodoItem;
     onEdit: (item: TodoItem) => void;
-    onMarkAsDone: (item: TodoItem) => void;
+    onMarkAsDone: (item: any) => void;
 };
 
 
-const TodoListItem: React.FC<ITodoItemProps> = ({ todo, onEdit, onMarkAsDone }) => (
+const TodoListItem: React.FC<ITodoItemProps> = ({ todo, currentTodo, onEdit, onMarkAsDone }) => (
     <div key={todo.id} className="todo-list-item">
         <div>
             <p className='title'>{todo.title}</p>
@@ -18,8 +17,8 @@ const TodoListItem: React.FC<ITodoItemProps> = ({ todo, onEdit, onMarkAsDone }) 
             <p>{new Date(todo.date).toLocaleDateString()}</p>
         </div>
         <div className="btn-container">
-            <button className="btn edit" onClick={() => onEdit(todo)}>Edit </button>
-            <button className="btn submit-btn" onClick={() => onMarkAsDone(todo)}>Done </button>
+            <button disabled={currentTodo?.id === todo.id} className="btn edit" onClick={() => onEdit(todo)}>Edit </button>
+            <button disabled={currentTodo?.id === todo.id} className="btn submit-btn" onClick={() => onMarkAsDone(todo)}>Done </button>
         </div>
     </div>
 );
