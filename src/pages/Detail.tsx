@@ -42,9 +42,8 @@ function Detail() {
 
             <hr className='ruler' />
             {
-                todos.length === 0 && (<p>No Todos found</p>)
+                todos.length === 0 ? (<p>No Todos found</p>) : (<TodoList todos={todos} onEdit={setCurrentTodo} currentTodo={currentTodo} onMarkAsDone={onMarkAsDone} />)
             }
-            <TodoList todos={todos} onEdit={setCurrentTodo} currentTodo={currentTodo} onMarkAsDone={onMarkAsDone} />
         </div>
     );
 };
