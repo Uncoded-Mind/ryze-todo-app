@@ -1,14 +1,7 @@
-// src/context/AuthServiceContext.tsx
-
 import { createContext, useContext } from "react";
-import { TodoService } from "../services/todo";
+import { TodoService } from "../services/todo/todo";
 
-
-
-
-// Create a singleton instance
 const todoService = new TodoService();
-
 const TodoServiceContext = createContext<TodoService>(todoService);
 
 export const TodoServiceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

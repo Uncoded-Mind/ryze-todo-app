@@ -1,15 +1,13 @@
+import { ITodoListSharedProps } from './TodoList';
 //components
-import { TodoItem } from '../services/todo';
+import { TodoItem } from '../../services/todo/todo';
 
-interface ITodoItemProps {
-    currentTodo: TodoItem | null;
+interface ITodoItemProps extends ITodoListSharedProps {
     todo: TodoItem;
-    onEdit: (item: TodoItem) => void;
-    onMarkAsDone: (item: any) => void;
 };
 
-
 function TodoListItem({ todo, currentTodo, onEdit, onMarkAsDone }: ITodoItemProps) {
+    
     return (
         <div key={todo.id} className="todo-list-item">
             <div>
@@ -24,6 +22,5 @@ function TodoListItem({ todo, currentTodo, onEdit, onMarkAsDone }: ITodoItemProp
         </div>
     )
 };
-
 
 export default TodoListItem;

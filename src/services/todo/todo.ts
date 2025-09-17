@@ -1,10 +1,13 @@
+import { TODO_STORAGE_KEY } from "../../helper/contants";
+
 export type TodoItem = {
     id: number;
     title: string;
     description: string;
     date: string;
 };
-export const STORAGE_KEY = 'ryzeTodo_todos';
+
+
 
 export class TodoService {
     private todos: TodoItem[] = [];
@@ -14,14 +17,14 @@ export class TodoService {
     }
 
     private loadTodos() {
-        const storedTodos = localStorage.getItem(STORAGE_KEY);
+        const storedTodos = localStorage.getItem(TODO_STORAGE_KEY);
         if (storedTodos) {
             this.todos = JSON.parse(storedTodos);
         }
     }
 
     private saveTodos() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
+        localStorage.setItem(TODO_STORAGE_KEY, JSON.stringify(this.todos));
     }
 
     getAllTodos(): TodoItem[] {
@@ -38,7 +41,7 @@ export class TodoService {
         return newItem;
     }
 
-    updateTodos(id: number, update: Omit<TodoItem, 'id'>): TodoItem | null {
+    updateTodos(update: Omit<TodoItem, 'id'>, id: number): TodoItem | null {
         const idx = this.todos.findIndex(todo => todo.id === id);
         if (idx === -1) return null;
         this.todos[idx] = { ...update, id };

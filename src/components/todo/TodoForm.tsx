@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 //components
-import { TodoItem } from '../services/todo';
+import { TodoItem } from '../../services/todo/todo';
 
 interface ITodoFormProps {
     onSave: (data: Omit<TodoItem, 'id'>, id?: number) => void;
@@ -14,20 +14,17 @@ interface IFormValues {
     date: string;
 }
 
-
 function TodoForm({ onSave, onCancel, currentTodo }: ITodoFormProps) {
 
     const today = new Date().toISOString().split('T')[0];
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [date, setDate] = useState('');
+    const [date, setDate] = useState(today);
     const [error, setError] = useState('');
     const submitRef = useRef<() => void>(() => { });
 
     const hasReachedTitleMax = title.length === 100;
     const hasReachedDescriptionMax = description.length === 300;
-
-
 
     const validateForm = (values: IFormValues): string | undefined => {
         const rules: Record<keyof IFormValues, string> = {
@@ -76,15 +73,15 @@ function TodoForm({ onSave, onCancel, currentTodo }: ITodoFormProps) {
 
 
     return (
-        <>
+        <div className='form-container'>
             <div className="form-field">
                 <p>Title</p>
-                <input value={title} maxLength={100} onChange={e => setTitle(e.target.value)} />
+                <input placeholder='Give your task a title...' value={title} maxLength={100} onChange={e => setTitle(e.target.value)} />
                 <p className={`charcount ${hasReachedTitleMax ? "max-length" : ""}`} >{title.length}/100</p>
             </div>
             <div className="form-field">
                 <p>Text</p>
-                <textarea rows={5} value={description} maxLength={300} onChange={e => setDescription(e.target.value)} />
+                <textarea placeholder='Describe your task...' rows={5} value={description} maxLength={300} onChange={e => setDescription(e.target.value)} />
                 <p className={`charcount ${hasReachedDescriptionMax ? "max-length" : ""}`} >{description.length}/300</p>
             </div>
             <div className="form-field">
@@ -96,7 +93,7 @@ function TodoForm({ onSave, onCancel, currentTodo }: ITodoFormProps) {
                 <button className="submit-btn" onClick={onSubmit}>Save</button>
                 {currentTodo && <button className="btn" onClick={onCancel}>Cancel</button>}
             </div>
-        </>
+        </div>
     );
 };
 

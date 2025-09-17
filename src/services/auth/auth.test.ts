@@ -1,5 +1,6 @@
+import { CREDENTIALS_STORAGE_KEY, VALID_PASSWORD, VALID_USERNAME } from "../../helper/contants";
+import { AuthService } from "./auth";
 
-import { AuthService, VALID_PASSWORD, VALID_USERNAME, STORAGE_KEY } from "./auth";
 
 const VALID_CREDENTIALS = { username: VALID_USERNAME, password: VALID_PASSWORD };
 
@@ -23,7 +24,7 @@ describe('AuthService', () => {
     let auth: AuthService;
 
     beforeEach(() => {
-        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(CREDENTIALS_STORAGE_KEY);
         auth = new AuthService();
     });
 
@@ -32,7 +33,7 @@ describe('AuthService', () => {
         expect(result).toBe(true);
         expectLoggedIn(auth);
         expect(auth.getUser()).toBe(VALID_USERNAME);
-        expect(localStorage.getItem(STORAGE_KEY)).not.toBeNull();
+        expect(localStorage.getItem(CREDENTIALS_STORAGE_KEY)).not.toBeNull();
     });
 
     it('fails to login the user with wrong username', () => {

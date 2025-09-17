@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { TodoItem } from '../services/todo';
-import { useTodoService } from '../context/TodosContext';
+import { TodoItem } from '../services/todo/todo';
+import { useTodoService } from '../contexts/TodosContext';
 
 //components
-import TodoForm from '../components/TodoForm';
-import TodoList from '../components/TodoList';
+import TodoForm from '../components/todo/TodoForm';
+import TodoList from '../components/todo/TodoList';
 
 
 function Detail() {
@@ -18,10 +18,13 @@ function Detail() {
     }
 
     const handleSave = (data: Omit<TodoItem, 'id'>, id?: number) => {
-        if (id) todoService.updateTodos(id, data);
-        else todoService.addTodo(data);
+        if (id) {
+            todoService.updateTodos(data, id)
+        } else {
+            todoService.addTodo(data);
+        }
+        setCurrentTodo(null);
         setTodos(todoService.getAllTodos());
-
     };
 
     const onMarkAsDone = (todo: TodoItem) => {
@@ -33,11 +36,10 @@ function Detail() {
         <div className="container">
             <div className="header">
                 <h2>Todos</h2>
+            </div>
 
-            </div>
-            <div className="form-container">
-                <TodoForm onSave={handleSave} currentTodo={currentTodo} onCancel={handleCancel} />
-            </div>
+            <TodoForm onSave={handleSave} currentTodo={currentTodo} onCancel={handleCancel} />
+
             <hr className='ruler' />
             {
                 todos.length === 0 && (<p>No Todos found</p>)
