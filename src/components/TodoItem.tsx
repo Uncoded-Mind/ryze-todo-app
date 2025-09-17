@@ -5,17 +5,22 @@ import { TodoItem } from '../services/todo';
 
 interface ITodoItemProps {
     todo: TodoItem;
-    onEdit: (item: any) => void;
+    onEdit: (item: TodoItem) => void;
+    onMarkAsDone: (item: TodoItem) => void;
 };
 
 
-const TodoListItem: React.FC<ITodoItemProps> = ({ todo, onEdit }) => (
+const TodoListItem: React.FC<ITodoItemProps> = ({ todo, onEdit, onMarkAsDone }) => (
     <div key={todo.id} className="todo-list-item">
         <div>
             <p className='title'>{todo.title}</p>
-            <div className="small"> Target: {new Date(todo.date).toLocaleDateString()}</div>
+            <p> Deadline: </p>
+            <p>{new Date(todo.date).toLocaleDateString()}</p>
         </div>
-        <button className="btn ghost" onClick={() => onEdit(todo)}>Edit </button>
+        <div className="btn-container">
+            <button className="btn edit" onClick={() => onEdit(todo)}>Edit </button>
+            <button className="btn submit-btn" onClick={() => onMarkAsDone(todo)}>Done </button>
+        </div>
     </div>
 );
 
