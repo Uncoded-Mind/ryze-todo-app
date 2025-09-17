@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { TodoItem } from '../services/todo';
 import { useTodoService } from '../context/TodosContext';
 
@@ -7,8 +7,7 @@ import TodoForm from '../components/TodoForm';
 import TodoList from '../components/TodoList';
 
 
-
-const Detail: React.FC = () => {
+function Detail() {
 
     const todoService = useTodoService();
     const [todos, setTodos] = useState<TodoItem[]>(todoService.getAllTodos());

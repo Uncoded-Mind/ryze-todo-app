@@ -1,5 +1,5 @@
-import React from 'react';
 import { TodoItem } from '../services/todo';
+//components
 import TodoListItem from './TodoItem';
 
 
@@ -11,15 +11,17 @@ interface ITodoListProps {
 };
 
 
-const TodoList: React.FC<ITodoListProps> = ({ todos, onEdit, currentTodo, onMarkAsDone }) => (
-    <>
-        <div className="todo-list">
-            {todos.map(todo => (
-                <TodoListItem key={todo.id} currentTodo={currentTodo} onMarkAsDone={onMarkAsDone} todo={todo} onEdit={onEdit} />
-            ))}
-        </div>
-    </>
-);
+function TodoList({ todos, onEdit, currentTodo, onMarkAsDone }: ITodoListProps) {
+    return (
+        <>
+            <div className="todo-list">
+                {todos.map(todo => (
+                    <TodoListItem key={todo.id} currentTodo={currentTodo} onMarkAsDone={onMarkAsDone} todo={todo} onEdit={onEdit} />
+                ))}
+            </div>
+        </>
+    )
+};
 
 
 export default TodoList;

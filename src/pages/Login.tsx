@@ -1,14 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { AuthService } from '../auth/auth';
-import { VALID_PASSWORD, VALID_USERNAME } from '../auth/auth';
+import { useEffect, useRef, useState } from 'react';
+import { AuthService,  VALID_PASSWORD, VALID_USERNAME  } from '../auth/auth';
 import { Route } from '../routes/routes';
 
 interface ILoginProps { auth: AuthService; navigate: (nextRoute: Route) => void };
 
-const Login: React.FC<ILoginProps> = ({ auth, navigate }) => {
+function Login({ auth, navigate }: ILoginProps) {
 
     const [fieldType, setFieldType] = useState("password")
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');

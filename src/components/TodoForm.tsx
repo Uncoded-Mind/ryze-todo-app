@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
+//components
 import { TodoItem } from '../services/todo';
 
 interface ITodoFormProps {
@@ -14,7 +15,8 @@ interface IFormValues {
 }
 
 
-const TodoForm: React.FC<ITodoFormProps> = ({ onSave, onCancel, currentTodo }) => {
+function TodoForm({ onSave, onCancel, currentTodo }: ITodoFormProps) {
+
     const today = new Date().toISOString().split('T')[0];
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -22,8 +24,8 @@ const TodoForm: React.FC<ITodoFormProps> = ({ onSave, onCancel, currentTodo }) =
     const [error, setError] = useState('');
     const submitRef = useRef<() => void>(() => { });
 
-    const hasReachedTitleMax  = title.length === 100;
-    const hasReachedDescriptionMax  = description.length === 300;
+    const hasReachedTitleMax = title.length === 100;
+    const hasReachedDescriptionMax = description.length === 300;
 
 
 
@@ -36,7 +38,7 @@ const TodoForm: React.FC<ITodoFormProps> = ({ onSave, onCancel, currentTodo }) =
 
         const missing = (Object.entries(rules) as [keyof IFormValues, string][])
             .find(([field]) => !values[field]);
-        
+
         return missing?.[1]
 
     };
