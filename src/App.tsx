@@ -11,17 +11,21 @@ import Detail from './pages/Detail';
 function App() {
 
   const auth = useAuthService();
-
   const [route, setRoute] = useState<Route>(() => (auth.isLoggedIn() ? Route.Detail : Route.Login));
   const navigate = (route: Route) => setRoute(route);
 
+  const handleLogout = () => {
+    auth.logout();
+    navigate(Route.Login);
+  }
+
   return (
     <>
-      {auth.isLoggedIn() && <button className="btn logout" onClick={() => { auth.logout(); navigate(Route.Login); }}>Logout</button>}
+      {auth.isLoggedIn() && <button className="btn logout" onClick={handleLogout}>Logout</button>}
       <h1> León's Todo App</h1>
 
       {
-        route === 'login' ? <Login auth={auth} navigate={navigate} /> : <Detail auth={auth} navigate={navigate} />
+        route === 'login' ? <Login auth={auth} navigate={navigate} /> : <Detail />
       }
     </>
   )

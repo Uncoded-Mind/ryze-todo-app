@@ -51,7 +51,9 @@ const Login: React.FC<ILoginProps> = ({ auth, navigate }) => {
 
     return (
         <div className="container">
-            <h2>Login</h2>
+            <div className="header">
+                <h2>Login</h2>
+            </div>
             <div className="form-container">
 
                 <div className="form-field">

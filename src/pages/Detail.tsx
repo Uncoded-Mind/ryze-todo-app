@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
-import { AuthService } from '../auth/auth';
 import { TodoItem } from '../services/todo';
-import { Route } from '../routes/routes';
 import { useTodoService } from '../context/TodosContext';
 
 //components
 import TodoForm from '../components/TodoForm';
 import TodoList from '../components/TodoList';
 
-interface IDetailProps { auth: AuthService; navigate: (nextRoute: Route) => void };
 
-const Detail: React.FC<IDetailProps> = ({ auth, navigate }) => {
+
+const Detail: React.FC = () => {
 
     const todoService = useTodoService();
-
     const [currentTodo, setCurrentTodo] = useState<TodoItem | null>(null);
     const [todos, setTodos] = useState<TodoItem[]>(todoService.getAllTodos());
 
@@ -23,6 +20,10 @@ const Detail: React.FC<IDetailProps> = ({ auth, navigate }) => {
         setTodos(todoService.getAllTodos());
         setCurrentTodo(null);
     };
+
+    const onMarkAsDone = (todo: TodoItem) => {
+        setTodos(todoService.removeTodo(todo.id));
+    }
 
 
     return (
@@ -34,10 +35,11 @@ const Detail: React.FC<IDetailProps> = ({ auth, navigate }) => {
             <div className="form-container">
                 <TodoForm onSave={handleSave} currentTodo={currentTodo} />
             </div>
+            <hr className='ruler' />
             {
-                todos.length === 0 && (<p>No entries found</p>)
+                todos.length === 0 && (<p>No Todos found</p>)
             }
-            <TodoList todos={todos} onEdit={setCurrentTodo} />
+            <TodoList todos={todos} onEdit={setCurrentTodo} onMarkAsDone={onMarkAsDone} />
         </div>
     );
 };

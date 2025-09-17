@@ -1,3 +1,7 @@
+/*
+CRA comes with postcss which allows scss like selectors
+*/
+
 *,
 *::before,
 *::after {
@@ -36,7 +40,7 @@ h2 {
 
 .btn-container {
   display: flex;
-  align-items: flex-end;
+  justify-content: space-between;
 }
 
 .password-container {
@@ -66,14 +70,20 @@ h2 {
 
   input,
   textarea {
-
+    resize: vertical;
     padding: .5rem;
 
   }
 
   .charcount {
-    font-size: 12px;
+    margin-top: 0;
+    font-size: 0.9rem;
+    color: #b6b6b6;
+    text-align: right;
 
+    &.max-length {
+      color: rgb(209, 157, 45)
+    }
   }
 }
 
@@ -83,6 +93,10 @@ h2 {
   border-radius: 3px;
   padding: .5rem 1rem;
   font-weight: 600;
+
+  &.edit {
+    background: #f8e74b;
+  }
 }
 
 .error {
@@ -107,10 +121,7 @@ h2 {
   margin-top: 2rem;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  /* 4 columns of equal width */
-  gap: 16px;
-  /* spacing between items, adjust as needed */
-
+  gap: 1rem;
 
   .todo-list-item {
     background: #fff8b5;
@@ -121,6 +132,10 @@ h2 {
       font-weight: 600;
     }
 
- 
+
   }
+}
+
+.ruler {
+  margin: 2rem 0;
 }
