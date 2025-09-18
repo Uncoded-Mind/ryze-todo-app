@@ -1,8 +1,9 @@
 
 import { TODO_STORAGE_KEY } from "../../helper/constants";
+import { TodoItem } from "../../types/types";
 import { TodoService } from "./todo";
 
-const EXAMPLE_TODO = { title: 'Test', description: 'Desc', date: '2025-09-17' };
+const EXAMPLE_TODO: Omit<TodoItem, "id"> = { title: 'Test', description: 'Desc', date: '2025-09-17', completed: true };
 
 function createTodo(service: TodoService) {
     return service.addTodo(EXAMPLE_TODO);
@@ -24,14 +25,14 @@ describe('TodoService', () => {
         const todo = createTodo(service);
         expect(todo.id).toBe(1);
         expect(service.getAllTodos()).toHaveLength(1);
-          const storedTodos = JSON.parse(localStorage.getItem(TODO_STORAGE_KEY) || '[]');
+        const storedTodos = JSON.parse(localStorage.getItem(TODO_STORAGE_KEY) || '[]');
         expect(storedTodos).toHaveLength(1);
         expect(storedTodos[0].title).toBe('Test');
     });
 
     it('should update a todo', () => {
         const todo = createTodo(service);
-        const updated = service.updateTodos({ title: 'New', description: 'Updated', date: '2025-09-18' }, todo.id);
+        const updated = service.updateTodos({ title: 'New', description: 'Updated', date: '2025-09-18', completed: true }, todo.id);
         expect(updated).not.toBeNull();
         expect(updated?.title).toBe('New');
         const storedTodos = JSON.parse(localStorage.getItem(TODO_STORAGE_KEY) || '[]');
@@ -51,5 +52,11 @@ describe('TodoService', () => {
         const storedTodos = JSON.parse(localStorage.getItem(TODO_STORAGE_KEY) || '[]');
         expect(storedTodos).toHaveLength(0);
     });
+
+    it('should mark as done', () => {
+        const todo = createTodo(service);
+        service.markAsDone(todo.id);
+        expect(todo.completed).toBe(true);
+    })
 
 });
