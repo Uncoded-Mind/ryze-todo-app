@@ -43,20 +43,22 @@ function LoginForm({ auth, navigate }: ILoginProps) {
     return (
         <div className="form-container">
             <div className="form-field">
-                <p>Username</p>
+                <label htmlFor="username">Username</label>
                 <input
                     type="text"
                     placeholder="Username"
+                    id="username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                 />
             </div>
             <div className="form-field">
-                <p>Password</p>
+                <label htmlFor="password-input">Password</label>
                 <div className="password-container">
                     <input
                         type={fieldType}
                         placeholder="Password"
+                        id="password-input"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />

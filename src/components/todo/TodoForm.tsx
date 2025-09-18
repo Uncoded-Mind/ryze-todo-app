@@ -77,18 +77,18 @@ function TodoForm({ onSave, onCancel, currentTodo }: ITodoFormProps) {
     return (
         <div className='form-container'>
             <div className="form-field">
-                <p>Title</p>
-                <input placeholder='Give your task a title...' value={title} maxLength={100} onChange={e => setTitle(e.target.value)} />
+                <label htmlFor='title'>Title</label>
+                <input id="title" placeholder='Give your task a title...' value={title} maxLength={100} onChange={e => setTitle(e.target.value)} />
                 <p className={`charcount ${hasReachedTitleMax ? "max-length" : ""}`} >{title.length}/100</p>
             </div>
             <div className="form-field">
-                <p>Text</p>
-                <textarea placeholder='Describe your task...' rows={5} value={description} maxLength={300} onChange={e => setDescription(e.target.value)} />
+                <label htmlFor='description'>Title</label>
+                <textarea id='description' placeholder='Describe your task...' rows={5} value={description} maxLength={300} onChange={e => setDescription(e.target.value)} />
                 <p className={`charcount ${hasReachedDescriptionMax ? "max-length" : ""}`} >{description.length}/300</p>
             </div>
             <div className="form-field">
-                <p>Date</p>
-                <input type="date" min={today} value={date} onChange={e => setDate(e.target.value)} />
+                <label htmlFor='date'>Date</label>
+                <input id="date" type="date" min={today} value={date} onChange={e => setDate(e.target.value)} />
             </div>
             {error && <p className="error">{error}</p>}
             <div className="btn-container">
