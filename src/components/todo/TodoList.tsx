@@ -52,14 +52,14 @@ function TodoList({ todos, onEdit, currentTodo, onMarkAsDone }: ITodoListProps) 
                     onClick={() => handleSort(SortingString.DEADLINE_ASC)}
                     className={`btn sorting-tag ${sortBy === SortingString.DEADLINE_ASC ? "active" : ""}`}
                 >
-                    Deadline (ASC)
+                    Due Date (ASC)
                 </button>
                 <button
                     disabled={sortedTodos.length === 1}
                     onClick={() => handleSort(SortingString.DEADLINE_DESC)}
                     className={`btn sorting-tag ${sortBy === SortingString.DEADLINE_DESC ? "active" : ""}`}
                 >
-                    Deadline (DESC)
+                    Due Date (DESC)
                 </button>
             </div>
             <div className="todo-list">

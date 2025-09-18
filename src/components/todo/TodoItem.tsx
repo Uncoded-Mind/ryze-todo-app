@@ -12,7 +12,7 @@ function TodoListItem({ todo, currentTodo, onEdit, onMarkAsDone }: ITodoItemProp
         <div key={todo.id} className="todo-list-item">
             <div>
                 <p className='title'>{todo.title}</p>
-                <p> Deadline: </p>
+                <p> Due Date: </p>
                 <p>{new Date(todo.date).toLocaleDateString()}</p>
             </div>
             <div className="btn-container">
