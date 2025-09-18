@@ -1,11 +1,6 @@
-import { TODO_STORAGE_KEY } from "../../helper/contants";
 
-export type TodoItem = {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-};
+import { TODO_STORAGE_KEY } from "../../helper/constants";
+import { TodoItem } from "../../types/types";
 
 
 

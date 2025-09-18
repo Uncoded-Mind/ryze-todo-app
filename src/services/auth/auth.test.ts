@@ -1,4 +1,4 @@
-import { CREDENTIALS_STORAGE_KEY, VALID_PASSWORD, VALID_USERNAME } from "../../helper/contants";
+import { CREDENTIALS_STORAGE_KEY, VALID_PASSWORD, VALID_USERNAME } from "../../helper/constants";
 import { AuthService } from "./auth";
 
 

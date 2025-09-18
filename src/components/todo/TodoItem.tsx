@@ -1,6 +1,6 @@
+import { TodoItem } from '../../types/types';
 import { ITodoListSharedProps } from './TodoList';
-//components
-import { TodoItem } from '../../services/todo/todo';
+
 
 interface ITodoItemProps extends ITodoListSharedProps {
     todo: TodoItem;

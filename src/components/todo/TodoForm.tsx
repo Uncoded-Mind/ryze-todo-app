@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
+import { TodoItem } from '../../types/types';
 //components
-import { TodoItem } from '../../services/todo/todo';
+
 
 interface ITodoFormProps {
     onSave: (data: Omit<TodoItem, 'id'>, id?: number) => void;

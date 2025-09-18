@@ -1,4 +1,5 @@
-import { TODO_STORAGE_KEY } from "../../helper/contants";
+
+import { TODO_STORAGE_KEY } from "../../helper/constants";
 import { TodoService } from "./todo";
 
 const EXAMPLE_TODO = { title: 'Test', description: 'Desc', date: '2025-09-17' };
@@ -23,7 +24,7 @@ describe('TodoService', () => {
         const todo = createTodo(service);
         expect(todo.id).toBe(1);
         expect(service.getAllTodos()).toHaveLength(1);
-        const storedTodos = JSON.parse(localStorage.getItem(TODO_STORAGE_KEY) || '[]');
+          const storedTodos = JSON.parse(localStorage.getItem(TODO_STORAGE_KEY) || '[]');
         expect(storedTodos).toHaveLength(1);
         expect(storedTodos[0].title).toBe('Test');
     });

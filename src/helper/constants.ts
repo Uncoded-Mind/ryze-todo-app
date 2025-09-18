@@ -1,6 +1,6 @@
 //storage keys
 export const CREDENTIALS_STORAGE_KEY = 'ryzeTodo_credentials';
-export const TODO_STORAGE_KEY = 'ryzeTodo_todos';
+export const TODO_STORAGE_KEY : string = 'ryzeTodo_todos';
 
 //misc
 export const VALID_USERNAME = 'RYZE_TESTUSER';

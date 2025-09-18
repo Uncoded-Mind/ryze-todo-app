@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
-import { TodoItem } from '../../services/todo/todo';
+
 //components
 import TodoListItem from './TodoItem';
+import { TodoItem } from '../../types/types';
 
 enum SortingString {
     DEADLINE_ASC = "deadline_asc",

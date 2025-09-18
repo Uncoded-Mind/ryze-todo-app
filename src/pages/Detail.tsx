@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { TodoItem } from '../services/todo/todo';
 import { useTodoService } from '../contexts/TodosContext';
-
+import { TodoItem } from '../types/types';
 //components
 import TodoForm from '../components/todo/TodoForm';
 import TodoList from '../components/todo/TodoList';
-
 
 function Detail() {
 

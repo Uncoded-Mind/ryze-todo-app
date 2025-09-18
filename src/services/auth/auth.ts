@@ -1,7 +1,9 @@
-import { CREDENTIALS_STORAGE_KEY, VALID_PASSWORD, VALID_USERNAME } from "../../helper/contants";
+
+import { CREDENTIALS_STORAGE_KEY, VALID_PASSWORD, VALID_USERNAME } from "../../helper/constants";
+import { Credentials } from "../../types/types";
 
 //could also use interface if we want to extend it later, e.g. role = 'admin'
-export type Credentials = { username: string; password: string };
+
 
 export class AuthService {
 
