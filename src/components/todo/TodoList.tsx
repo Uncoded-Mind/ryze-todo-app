@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 
 //components
-import TodoListItem from './TodoItem';
+import TodoListItem from './TodoListItem';
 import { TodoItem } from '../../types/types';
 
 enum SortingString {
@@ -13,13 +13,14 @@ export interface ITodoListSharedProps {
     currentTodo: TodoItem | null;
     onEdit: (item: TodoItem) => void;
     onMarkAsDone: (item: TodoItem) => void;
+    onDelete: (item: TodoItem) => void;
 };
 
 interface ITodoListProps extends ITodoListSharedProps {
     todos: TodoItem[];
 };
 
-function TodoList({ todos, onEdit, currentTodo, onMarkAsDone }: ITodoListProps) {
+function TodoList({ todos, onEdit, currentTodo, onMarkAsDone, onDelete }: ITodoListProps) {
     const [sortBy, setSortBy] = useState<SortingString | null>(null)
 
     const handleSort = (localSortBy: SortingString) => {
@@ -29,7 +30,7 @@ function TodoList({ todos, onEdit, currentTodo, onMarkAsDone }: ITodoListProps) 
             setSortBy(localSortBy)
         }
     }
-    
+
     const sortedTodos = useMemo(() => {
         if (!todos?.length) return [];
         if (!sortBy) return todos;
@@ -64,7 +65,12 @@ function TodoList({ todos, onEdit, currentTodo, onMarkAsDone }: ITodoListProps) 
             </div>
             <div className="todo-list">
                 {sortedTodos.map(todo => (
-                    <TodoListItem key={todo.id} currentTodo={currentTodo} onMarkAsDone={onMarkAsDone} todo={todo} onEdit={onEdit} />
+                    <TodoListItem
+                        key={todo.id}
+                        currentTodo={currentTodo}
+                        todo={todo} onDelete={onDelete}
+                        onEdit={onEdit}
+                        onMarkAsDone={onMarkAsDone} />
                 ))}
             </div>
         </>

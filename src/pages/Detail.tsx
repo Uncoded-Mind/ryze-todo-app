@@ -25,7 +25,11 @@ function Detail() {
         setTodos(todoService.getAllTodos());
     };
 
-    const onMarkAsDone = (todo: TodoItem) => {
+    const handleMarkAsDone = (todo: TodoItem) => {
+        setTodos(todoService.markAsDone(todo.id));
+    }
+
+    const handleDelete = (todo: TodoItem) => {
         setTodos(todoService.removeTodo(todo.id));
     }
 
@@ -40,7 +44,7 @@ function Detail() {
 
             <hr className='ruler' />
             {
-                todos.length === 0 ? (<p>No Todos found</p>) : (<TodoList todos={todos} onEdit={setCurrentTodo} currentTodo={currentTodo} onMarkAsDone={onMarkAsDone} />)
+                todos.length === 0 ? (<p>No Todos found</p>) : (<TodoList onDelete={handleDelete} todos={todos} onEdit={setCurrentTodo} currentTodo={currentTodo} onMarkAsDone={handleMarkAsDone} />)
             }
         </div>
     );
