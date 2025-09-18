@@ -15,6 +15,7 @@ CRA comes with postcss which allows scss like selectors
   background-color: #242424;
   --main-text-color: rgb(255, 240, 240);
   --submit-button-color: rgb(29, 117, 37);
+  --red-button-color: #f34e4e;
   color: var(--main-text-color)
 }
 
@@ -124,11 +125,16 @@ button:disabled {
 }
 
 .logout {
-  background: #f34e4e;
+  background: var(--red-button-color);
   color: var(--main-text-color);
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.delete-btn {
+  background: var(--red-button-color);
+  color: var(--main-text-color);
 }
 
 .todo-list {

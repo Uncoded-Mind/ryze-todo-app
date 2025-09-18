@@ -48,6 +48,14 @@ export class TodoService {
         return this.todos.find(todo => todo.id === id);
     }
 
+    markAsDone(id: number) {
+        const updatedTodos = this.todos.map(todo =>
+            todo.id === id ? { ...todo, completed: true } : todo
+        )
+        this.todos = updatedTodos;
+        return this.todos
+    }
+
     removeTodo(id: number) {
         this.todos = this.todos.filter(todo => todo.id !== id);
         this.saveTodos();

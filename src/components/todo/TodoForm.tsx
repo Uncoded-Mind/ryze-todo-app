@@ -43,12 +43,13 @@ function TodoForm({ onSave, onCancel, currentTodo }: ITodoFormProps) {
 
     const onSubmit = () => {
         const error = validateForm({ title, description, date });
+        const completed = false;
         if (error) {
             setError(error);
             return;
         }
         setError('');
-        onSave({ title, description, date }, currentTodo?.id);
+        onSave({ title, description, date, completed }, currentTodo?.id);
         setTitle('');
         setDescription('');
         setDate('');
