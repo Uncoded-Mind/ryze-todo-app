@@ -4,7 +4,8 @@ import { TodoItem } from '../../types/types';
 
 
 interface ITodoFormProps {
-    onSave: (data: Omit<TodoItem, 'id'>, id?: number) => void;
+    onSave: (data: Omit<TodoItem, "id">) => void;
+    onUpdate: (data: Omit<TodoItem, "id">) => void;
     onCancel: () => void;
     currentTodo: TodoItem | null;
 };
@@ -15,7 +16,7 @@ interface IFormValues {
     date: string;
 }
 
-function TodoForm({ onSave, onCancel, currentTodo }: ITodoFormProps) {
+function TodoForm({ onSave, onUpdate, onCancel, currentTodo }: ITodoFormProps) {
 
     const today = new Date().toISOString().split('T')[0];
     const [title, setTitle] = useState('');
@@ -43,13 +44,17 @@ function TodoForm({ onSave, onCancel, currentTodo }: ITodoFormProps) {
 
     const onSubmit = () => {
         const error = validateForm({ title, description, date });
-        const completed = false;
         if (error) {
             setError(error);
             return;
         }
+        if (currentTodo) {
+            const { completed, documentId } = currentTodo;
+            onUpdate({title, description, date, completed, documentId});
+        } else {
+            onSave({title, description, date, completed: false})
+        }
         setError('');
-        onSave({ title, description, date, completed }, currentTodo?.id);
         setTitle('');
         setDescription('');
         setDate('');

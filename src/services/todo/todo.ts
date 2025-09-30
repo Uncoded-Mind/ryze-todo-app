@@ -1,64 +1,58 @@
-
-import { TODO_STORAGE_KEY } from "../../helper/constants";
 import { TodoItem } from "../../types/types";
 
-
+const API_BASE_URL = "http://localhost:1337/api/todos";
 
 export class TodoService {
-    private todos: TodoItem[] = [];
-
-    constructor() {
-        this.loadTodos();
+    async getAllTodos(): Promise<TodoItem[]> {
+        const res = await fetch(API_BASE_URL);
+        if (!res.ok) throw new Error("Failed to fetch todos");
+        const data = await res.json();
+        return data.data;
     }
 
-    private loadTodos() {
-        const storedTodos = localStorage.getItem(TODO_STORAGE_KEY);
-        if (storedTodos) {
-            this.todos = JSON.parse(storedTodos);
-        }
+    async addTodo(todo: Omit<TodoItem, 'id'>): Promise<TodoItem> {
+        console.log("addTodo", todo);
+
+        const res = await fetch(API_BASE_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ data: todo }),
+        });
+        if (!res.ok) throw new Error("Failed to add todo");
+        return await res.json();
     }
 
-    private saveTodos() {
-        localStorage.setItem(TODO_STORAGE_KEY, JSON.stringify(this.todos));
+    async updateTodo(update: Omit<TodoItem, 'id'>): Promise<TodoItem> {
+        const { documentId, createdAt, updatedAt, publishedAt, ...fields } = update;
+        const res = await fetch(`${API_BASE_URL}/${documentId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ data: fields }),
+        });
+        if (!res.ok) throw new Error("Failed to update todo");
+        return await res.json();
     }
 
-    getAllTodos(): TodoItem[] {
-        return [...this.todos];
+    async findTodo(id: number): Promise<TodoItem | null> {
+        const res = await fetch(`${API_BASE_URL}/${id}`);
+        if (!res.ok) return null;
+        return await res.json();
     }
 
-    addTodo(todo: Omit<TodoItem, 'id'>): TodoItem {
-        const nextTodoId = this.todos.length === 0
-            ? 1
-            : Math.max(...this.todos.map(todo => todo.id)) + 1;
-        const newItem: TodoItem = { ...todo, id: nextTodoId };
-        this.todos.push(newItem);
-        this.saveTodos();
-        return newItem;
+    async markAsDone(id: number): Promise<TodoItem> {
+        const res = await fetch(`${API_BASE_URL}/${id}`, {
+            method: "PATCH", // use PATCH if supported
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ completed: true }),
+        });
+        if (!res.ok) throw new Error("Failed to mark todo as done");
+        return await res.json();
     }
 
-    updateTodos(update: Omit<TodoItem, 'id'>, id: number): TodoItem | null {
-        const idx = this.todos.findIndex(todo => todo.id === id);
-        if (idx === -1) return null;
-        this.todos[idx] = { ...update, id };
-        this.saveTodos();
-        return this.todos[idx];
-    }
-
-    findTodo(id: number) {
-        return this.todos.find(todo => todo.id === id);
-    }
-
-    markAsDone(id: number) {
-        const updatedTodos = this.todos.map(todo =>
-            todo.id === id ? { ...todo, completed: true } : todo
-        )
-        this.todos = updatedTodos;
-        return this.todos
-    }
-
-    removeTodo(id: number) {
-        this.todos = this.todos.filter(todo => todo.id !== id);
-        this.saveTodos();
-        return this.todos;
+    async removeTodo(id: number): Promise<void> {
+        const res = await fetch(`${API_BASE_URL}/${id}`, {
+            method: "DELETE",
+        });
+        if (!res.ok) throw new Error("Failed to delete todo");
     }
 }

@@ -5,4 +5,9 @@ export type TodoItem = {
     description: string;
     date: string;
     completed: boolean;
+    createdAt?: string;
+    documentId?: string;
+    publishedAt?: string;
+    updatedAt?: string;
 };
+

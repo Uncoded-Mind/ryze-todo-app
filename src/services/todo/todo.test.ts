@@ -1,62 +1,100 @@
-
-import { TODO_STORAGE_KEY } from "../../helper/constants";
-import { TodoItem } from "../../types/types";
 import { TodoService } from "./todo";
+import { TodoItem } from "../../types/types";
 
-const EXAMPLE_TODO: Omit<TodoItem, "id"> = { title: 'Test', description: 'Desc', date: '2025-09-17', completed: true };
+const EXAMPLE_TODO: Omit<TodoItem, "id"> = {
+  title: "Test",
+  description: "Desc",
+  date: "2025-09-17",
+  completed: true,
+};
 
-function createTodo(service: TodoService) {
-    return service.addTodo(EXAMPLE_TODO);
-}
+describe("TodoService (mocked API)", () => {
+  let service: TodoService;
 
-describe('TodoService', () => {
-    let service: TodoService;
+  beforeEach(() => {
+    service = new TodoService();
+    // Reset global fetch mock
+    (global as any).fetch = jest.fn();
+  });
 
-    beforeEach(() => {
-        localStorage.clear();
-        service = new TodoService();
+  it("should get all todos", async () => {
+    (global as any).fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => { return { data: [{ id: 1, ...EXAMPLE_TODO }, { id: 2, ...EXAMPLE_TODO }] } },
     });
 
-    it('should start with no todos', () => {
-        expect(service.getAllTodos()).toEqual([]);
+    const todos = await service.getAllTodos();
+
+    expect(todos).toHaveLength(2);
+    expect(todos[0].title).toBe("Test");
+  });
+
+  it("should add a todo", async () => {
+    const returnedTodo = { id: 1, ...EXAMPLE_TODO };
+    (global as any).fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => returnedTodo,
     });
 
-    it('should add a todo and save to localStorage', () => {
-        const todo = createTodo(service);
-        expect(todo.id).toBe(1);
-        expect(service.getAllTodos()).toHaveLength(1);
-        const storedTodos = JSON.parse(localStorage.getItem(TODO_STORAGE_KEY) || '[]');
-        expect(storedTodos).toHaveLength(1);
-        expect(storedTodos[0].title).toBe('Test');
+    const todo = await service.addTodo(EXAMPLE_TODO);
+    expect(todo.id).toBe(1);
+    expect(todo.title).toBe("Test");
+  });
+
+  it("should update a todo", async () => {
+    const baseData = {
+      title: "Updated Title",
+      description: "Updated Desc",
+      date: "2025-09-20",
+      completed: false,
+      id: 1,
+    };
+    const updatedTodo = {
+      title: "Updated Title",
+      description: "Updated Desc",
+      date: "2025-09-20",
+      completed: false,
+      id: 2,
+    };;
+
+    (global as any).fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => updatedTodo,
     });
 
-    it('should update a todo', () => {
-        const todo = createTodo(service);
-        const updated = service.updateTodos({ title: 'New', description: 'Updated', date: '2025-09-18', completed: true }, todo.id);
-        expect(updated).not.toBeNull();
-        expect(updated?.title).toBe('New');
-        const storedTodos = JSON.parse(localStorage.getItem(TODO_STORAGE_KEY) || '[]');
-        expect(storedTodos[0].title).toBe('New');
+    const result = await service.updateTodo(baseData);
+    expect(result).not.toBeNull();
+    expect(result?.id).toBe(2);
+    expect(result?.title).toBe("Updated Title");
+  });
+
+  it("should find a todo by id", async () => {
+    (global as any).fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ id: 1, ...EXAMPLE_TODO }),
     });
 
-    it('should find a todo by id', () => {
-        const todo = createTodo(service);
-        const found = service.findTodo(todo.id);
-        expect(found).toEqual(todo);
+    const todo = await service.findTodo(1);
+    expect(todo).not.toBeNull();
+    expect(todo?.title).toBe("Test");
+  });
+
+  it("should mark a todo as done", async () => {
+    const doneTodo = { id: 1, ...EXAMPLE_TODO, completed: true };
+    (global as any).fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => doneTodo,
     });
 
-    it('should remove a todo', () => {
-        const todo = createTodo(service);
-        service.removeTodo(todo.id);
-        expect(service.getAllTodos()).toHaveLength(0);
-        const storedTodos = JSON.parse(localStorage.getItem(TODO_STORAGE_KEY) || '[]');
-        expect(storedTodos).toHaveLength(0);
+    const result = await service.markAsDone(1);
+    expect(result.completed).toBe(true);
+  });
+
+  it("should remove a todo", async () => {
+    (global as any).fetch.mockResolvedValueOnce({
+      ok: true,
     });
 
-    it('should mark as done', () => {
-        const todo = createTodo(service);
-        service.markAsDone(todo.id);
-        expect(todo.completed).toBe(true);
-    })
-
+    await expect(service.removeTodo(1)).resolves.toBeUndefined();
+  });
 });

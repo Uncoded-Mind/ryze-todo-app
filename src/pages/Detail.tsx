@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTodoService } from '../contexts/TodosContext';
 import { TodoItem } from '../types/types';
 //components
@@ -6,32 +6,54 @@ import TodoForm from '../components/todo/TodoForm';
 import TodoList from '../components/todo/TodoList';
 
 function Detail() {
-
     const todoService = useTodoService();
-    const [todos, setTodos] = useState<TodoItem[]>(todoService.getAllTodos());
+    const [todos, setTodos] = useState<TodoItem[]>([]);
     const [currentTodo, setCurrentTodo] = useState<TodoItem | null>(null);
 
     const handleCancel = () => {
         setCurrentTodo(null);
     }
 
-    const handleSave = (data: Omit<TodoItem, 'id'>, id?: number) => {
-        if (id) {
-            todoService.updateTodos(data, id)
-        } else {
-            todoService.addTodo(data);
+    const fetchTodos = async () => {
+        try {
+            const allTodos = await todoService.getAllTodos();
+            setTodos(allTodos);
+        } catch (err) {
+            // setError("Failed to load todos");
+            console.error(err);
+        } finally {
+            // setLoading(false);
         }
+    }
+
+    const reload = () => {
         setCurrentTodo(null);
-        setTodos(todoService.getAllTodos());
+        fetchTodos();
+
+    }
+    const handleSave = async (data: Omit<TodoItem, "id">) => {
+        todoService.addTodo(data);
+        reload();
     };
 
-    const handleMarkAsDone = (todo: TodoItem) => {
-        setTodos(todoService.markAsDone(todo.id));
+    const handleUpdate = async (data: Omit<TodoItem, "id">) => {
+        await todoService.updateTodo(data)
+        reload();
+    };
+
+    const handleMarkAsDone = async (todo: TodoItem) => {
+        await todoService.markAsDone(todo.id);
+        fetchTodos();
     }
 
-    const handleDelete = (todo: TodoItem) => {
-        setTodos(todoService.removeTodo(todo.id));
+    const handleDelete = async (todo: TodoItem) => {
+        await todoService.removeTodo(todo.id);
+        fetchTodos();
     }
+
+    useEffect(() => {
+        fetchTodos();
+    }, []);
 
 
     return (
@@ -40,7 +62,7 @@ function Detail() {
                 <h2>Todos</h2>
             </div>
 
-            <TodoForm onSave={handleSave} currentTodo={currentTodo} onCancel={handleCancel} />
+            <TodoForm onSave={handleSave} onUpdate={handleUpdate} currentTodo={currentTodo} onCancel={handleCancel} />
 
             <hr className='ruler' />
             {
